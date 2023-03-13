@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from '../cart.service';
 
 import { Product, products } from '../products';
 
@@ -11,12 +12,20 @@ import { Product, products } from '../products';
 export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     const routeParams = Number(this.route.snapshot.paramMap.get('productId'));
 
     this.product = products.find((item) => item.id === routeParams);
     console.log(this.product);
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+    window.alert('Your product has been added to the cart!');
   }
 }
